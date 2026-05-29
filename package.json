@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "upload-db": "node scripts/upload-db-to-blob.js"
+    "upload-db": "node scripts/upload-db-to-neon.js",
+    "upload-db:neon": "node scripts/upload-db-to-neon.js",
+    "upload-db:blob": "node scripts/upload-db-to-blob.js"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@vercel/blob": "^2.3.0"
   },
   "engines": {
