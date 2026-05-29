@@ -1,0 +1,16 @@
+{
+  "name": "quota-query-system",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "upload-db": "node scripts/upload-db-to-blob.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
