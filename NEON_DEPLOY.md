@@ -64,6 +64,18 @@ DB_STATE_KEY=quota-query-system-fresh-20260529
 点击 Deploy。部署后先访问：
 
 ```text
+https://你的项目域名.vercel.app/api/ping
+```
+
+如果返回：
+
+```json
+{"ok":true,"service":"quota-query-system"}
+```
+
+说明 Vercel Functions 已经正确部署。然后再访问：
+
+```text
 https://你的项目域名.vercel.app/api/setup-status
 ```
 
@@ -82,6 +94,15 @@ https://你的项目域名.vercel.app/api/setup-status
 ```
 
 说明当前 `DB_STATE_KEY` 对应的数据里已经有用户。可以换一个新的 `DB_STATE_KEY` 后重新部署。
+
+如果 `/api/ping` 返回的是 HTML 页面，说明 Vercel 没有部署到最新代码，或项目设置错误。重点检查：
+
+- GitHub 最新提交里是否有 `api/ping.js`
+- Vercel 是否部署了最新 commit
+- Framework Preset 是否为 `Other`
+- Output Directory 是否为空
+- Root Directory 是否是项目根目录
+- `vercel.json` 是否包含 `"handle": "filesystem"`
 
 ## 7. 迁移本地数据到 Neon
 
