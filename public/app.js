@@ -34,16 +34,22 @@ const roleLabels = {
 init();
 
 async function init() {
-  const setup = await api("/api/setup-status");
-  state.needsSetup = setup.needsSetup;
-  if (!state.needsSetup) {
-    try {
-      const me = await api("/api/me");
-      state.user = me.user;
-      await loadQuotas();
-    } catch {
-      state.user = null;
+  try {
+    const setup = await api("/api/setup-status");
+    state.needsSetup = setup.needsSetup === true;
+    if (!state.needsSetup) {
+      try {
+        const me = await api("/api/me");
+        state.user = me.user;
+        await loadQuotas();
+      } catch {
+        state.user = null;
+      }
     }
+  } catch (error) {
+    state.user = null;
+    state.needsSetup = false;
+    state.error = error.message;
   }
   render();
 }
@@ -57,7 +63,10 @@ async function api(url, options = {}) {
     },
     ...options
   });
-  const data = await response.json().catch(() => ({}));
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  const data = isJson ? await response.json().catch(() => ({})) : {};
+  if (!isJson) throw new Error("API 路由未正确部署，请检查 Vercel Functions 配置");
   if (!response.ok) throw new Error(data.error || "请求失败");
   return data;
 }
